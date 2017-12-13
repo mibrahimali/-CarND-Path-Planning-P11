@@ -305,7 +305,6 @@ int main()
 						}
 
 					} // end prediction with lane scoring
-					cout << lane_is_occupied[0] << ","<< lane_is_occupied[1] << ","<< lane_is_occupied[2] << endl;
 					if (lane_is_occupied[lane])
 					{
 

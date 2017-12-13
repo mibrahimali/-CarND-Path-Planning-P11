@@ -1,6 +1,44 @@
 # CarND-Path-Planning-Project
 Self-Driving Car Engineer Nanodegree Program
-   
+
+
+# [Rubic points](https://review.udacity.com/#!/rubrics/1020/view)
+## Compilation
+### The code compiles correctly.
+Code compiles without errors with cmake and make. No changes were made to CMakeLists.txt.
+## Valid Trajectories
+### The car is able to drive at least 4.32 miles without incident
+The image below shows the car at 5.3 miles without a single incident.
+![5 miles](assets/successful_planning.png)
+### The car drives according to the speed limit
+The car never exceeds the 50 mph speed limit. The speed drops when obstructed by traffic ahead, with no free lanes available to shift to.
+### Max Acceleration and Jerk are not Exceeded
+The car does not exceed a total acceleration of 10 m/s^2 and a jerk of 10 m/s^3.
+### Car does not have collisions
+The car did not come into contact with any of the other cars on the road.
+### The car stays in its lane, except for the time between changing lanes
+The car doesn't spend more than a 3 second length out side the lane lanes during changing lanes, and every other time the car stays inside one of the 3 lanes on the right hand side of the road.
+### The car is able to change lanes
+The car is able to smoothly change lanes when it makes sense to do so, such as when behind a slower moving car and an adjacent lane is clear of other traffic.
+![lane_change](assets/change_lane.png)
+## Reflection
+
+### Prediction [lines 269-307](./src/main.cpp#L269)
+Through using the car's state and sensor fusion data, possible collisions are predicted. Frenet coordinates of the surrounding vehicles are used to determine their respective lanes and distance from the car. The outputs of this step are array of flags representing occupancy of each lane based on current and predicted trajectory of Ego Vehicle and other target vehicles.  
+
+### Behavior Planning [lines 308-334](./scr/main.cpp#L308)
+Based on the previous predictions, corrective behaviour is needed. The method used can be considered a state machine with 3 states ( Keep lane, change left and change right). Cost functions are considered too complex for such a simple application. However, a cost function is essential when optimized lane changes to improve forward progress is needed, which is a considerable improvement to the current implementation.
+
+### Trajectory Generation [line 340 to line 430](./scr/main.cpp#L340)
+This is where the next target waypoints are calculated and passed to the simulator. The first two points in the path are the last two points in the previous path. Given the target lane, three evenly spaced points (30 meters apart) are added to the path. A spline is generated through these points using the spline.h library. Waypoints are extracted as the first 30 meters of the spline and are sent to the simulator. A distance of 0.02 * ref_velocity / 2.24 is kept between the path points to maintain a velocity below the speed limit (50 mph). Division by 2.24 converts from miles per hour to meters per second.
+
+## Future Improvment
+* Use of Mutlimodel tracking algorithms for predection of traget motion to incooprate different scenarios (lane change , emergency braking).
+
+* Implement Emergency Braking Algoriths and add this state to planner' state machine
+
+* Use of Reinforcment Learning Algorithms 
+
 ### Simulator.
 You can download the Term3 Simulator which contains the Path Planning Project from the [releases tab (https://github.com/udacity/self-driving-car-sim/releases).
 
